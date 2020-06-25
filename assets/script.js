@@ -6,6 +6,9 @@
 // uv index
 // https://api.openweathermap.org/data/2.5/uvi?lat=37.75&lon=-122.37&appid=a72f11d02f33ee95d3125aac2554131c
 
+// for history of search
+// https://getbootstrap.com/docs/4.5/components/card/#list-groups
+
 // waits for page to load
 $(document).ready(function () {
     // finds citybtn
@@ -17,7 +20,7 @@ $(document).ready(function () {
 
     // when citybtn is clicked
     cityBtn.on("click", function () {
-        // empty todaydiv
+        // empty div with id today
         var todayDiv = $("#today");
         todayDiv.empty();
 
@@ -34,7 +37,7 @@ $(document).ready(function () {
 
         }).then(function (weather) {
             // get weather back
-            console.log(weather);
+            // console.log(weather);
 
             // for uv, get lon and lat
             var lon = weather.coord.lon;
@@ -67,39 +70,62 @@ $(document).ready(function () {
                 var tempP = $("<p>").text("Temp " + temp);
                 var humidityP = $("<p>").text("Humidity " + humidity);
                 var windP = $("<p>").text("Wind " + wind);
+
+                // if statements to determine if the uv is bad and change it to a badge 
+                // https://getbootstrap.com/docs/4.5/components/badge/
+                // <span class="badge badge-primary">
+
+
                 var uvP = $("<p>").text("UV " + uvIndex);
 
                 // currently pushes to under the search bar
                 todayDiv.append(nameH1, tempP, humidityP, windP, uvP);
 
-                // https://openweathermap.org/api/one-call-api <-- CHANGE TO THIS MUCH EASIER THAN FORECAST
-
-                var forecastQueryUrl = "https://api.openweathermap.org/data/2.5/forecast?q=" + city + "&units=metric&appid=" + appID;
+                var forecastQueryUrl = "https://api.openweathermap.org/data/2.5/onecall?lon=" + lon + "&lat=" + lat + "&units=metric&appid=" + appID;
                 console.log(forecastQueryUrl);
                 $.ajax({
                     url: forecastQueryUrl,
                     method: "GET"
 
                 }).then(function (forecast) {
-                    days = 0;
-                    var i = 0;
-                    while (days < 5) {
-                        // console.log(i);
-                        var newDateCheck = forecast.list[i].dt_txt.substr(11, 8);
-                        if (newDateCheck === "00:00:00") {
-                            days++;
-                            // console.log(forecast.list[i].dt_txt.substr(0, 10));
 
-                            var newDate = forecast.list[i].dt_txt.substr(0, 10);
+                    // loop through each day except for today for the next 5 days
+                    for (let i = 1; i < 5 + 1; i++) {
+                        // convert unix time to human time
+                        var unixTime = forecast.daily[i].dt;
+                        var milliTime = unixTime * 1000;
+                        var dateObj = new Date(milliTime);
+                        var dateFormat = dateObj.toLocaleString();
 
-                            var weatherIcon = forecast.list[i].weather[0].icon;
+                        // get date
+                        var forecastDate = dateFormat.substr(0, 10);
+                        // get weather icon for date
+                        var weatherIcon = forecast.daily[i].weather[0].icon;
+                        // get temp for date
+                        var temp = forecast.daily[i].temp.day;
+                        // get humidity for date
+                        var humidity = forecast.daily[i].humidity;
 
-                            var temp = forecast.list[i].main.temp;
-                            var humidity = forecast.list[i].main.humidity;
+                        // debug
+                        console.log(forecastDate, temp, humidity, weatherIcon);
 
-                            console.log(newDate, weatherIcon, temp, humidity);
-                        }
-                        i++;
+                        // empty div with id forecast
+                        var forecastDiv = $("#forecast");
+
+                        // push data to screen
+                        var dayDiv = $("<div style= width:100px; background-color:blue; margin:0px;>");
+                        var dateP = $("<p>").text(forecastDate);
+                        var iconP = $("<p>").text(weatherIcon);
+                        var tempP = $("<p>").text("Temp " + temp);
+                        var humidityP = $("<p>").text("Humidity " + humidity);
+
+                        var emptyDiv = $("<div style= width:50px; background-color:red;margin:0px;>");
+
+                        dayDiv.append(dateP, iconP, tempP, humidityP);
+                        forecastDiv.append(dayDiv, emptyDiv);
+
+
+
 
                     }
 

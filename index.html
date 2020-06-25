@@ -25,25 +25,32 @@
         <h1 style="background-color: #323232; color: white; width: 100%; padding: 10px; text-align: center;">Weather
             Dashboard</h1>
     </header>
-    <section id="search">
-        <div id="searchbar">
-            <p>Search for a city</p>
+    <div class="container-fluid">
+        <div class="row">
+            <section id="search" class="col-2">
+                <div id="searchbar">
+                    <p>Search for a city</p>
 
-            <input type="text" id="search-city" name="search-city" value="adelaide">
-            <input type="submit" id="search-city-btn">
+                    <input type="text" id="search-city" name="search-city" value="adelaide">
+                    <input type="submit" id="search-city-btn">
+                </div>
+                <div id="history"></div>
+            </section>
+
+            <section id="data" class="col-10">
+
+                <div id="today" class="jumbotron"></div>
+                <div id="forecast"></div>
+
+
+            </section>
         </div>
-        <div id="history"></div>
-    </section>
-    <section id="data">
-        <div id="today"></div>
-        <div id="5-day"></div>
-    </section>
 
 
-    <!-- jquery -->
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-    <!-- javascript -->
-    <script src="assets/script.js"></script>
+        <!-- jquery -->
+        <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+        <!-- javascript -->
+        <script src="assets/script.js"></script>
 </body>
 
 </html>
