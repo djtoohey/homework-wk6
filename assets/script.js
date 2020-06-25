@@ -65,18 +65,36 @@ $(document).ready(function () {
                 console.log("w", wind);
                 console.log("uv", uvIndex);
 
-                // push all results to the page
+                // push all results to todayDiv
                 var nameH1 = $("<h2>").text(name);
                 var tempP = $("<p>").text("Temp " + temp);
                 var humidityP = $("<p>").text("Humidity " + humidity);
                 var windP = $("<p>").text("Wind " + wind);
+                var uvP = $("<p>").text("UV Index: ");
 
-                // if statements to determine if the uv is bad and change it to a badge 
-                // https://getbootstrap.com/docs/4.5/components/badge/
-                // <span class="badge badge-primary">
+                // sets color for badge
+                if (uvIndex <= 2) {
+                    // less than or equal to 2 === Green Badge
+                    var uvBadge = $("<span class='badge badge-green'>").text(uvIndex);
+                }
+                else if (uvIndex <= 5) {
+                    // between 2 and 5 === Yellow Badge
+                    var uvBadge = $("<span class='badge badge-yellow'>").text(uvIndex);
+                }
+                else if (uvIndex <= 7) {
+                    // between 5 and 7 === Orange Badge
+                    var uvBadge = $("<span class='badge badge-orange'>").text(uvIndex);
+                }
+                else if (uvIndex <= 10) {
+                    // between 7 and 10 === Red Badge
+                    var uvBadge = $("<span class='badge badge-red'>").text(uvIndex);
+                }
+                else {
+                    // More than 10 === Purple Badge
+                    var uvBadge = $("<span class='badge badge-purple'>").text(uvIndex);
+                }
 
-
-                var uvP = $("<p>").text("UV " + uvIndex);
+                uvP.append(uvBadge);
 
                 // currently pushes to under the search bar
                 todayDiv.append(nameH1, tempP, humidityP, windP, uvP);
@@ -113,16 +131,16 @@ $(document).ready(function () {
                         var forecastDiv = $("#forecast");
 
                         // push data to screen
-                        var dayDiv = $("<div style= width:100px; background-color:blue; margin:0px;>");
+                        var dayDiv = $("<div class='forecast card text-white bg-primary'>");
                         var dateP = $("<p>").text(forecastDate);
-                        var iconP = $("<p>").text(weatherIcon);
+                        var iconP = $("<img>").attr("src", `http://openweathermap.org/img/wn/${weatherIcon}@2x.png`);
                         var tempP = $("<p>").text("Temp " + temp);
                         var humidityP = $("<p>").text("Humidity " + humidity);
 
-                        var emptyDiv = $("<div style= width:50px; background-color:red;margin:0px;>");
+
 
                         dayDiv.append(dateP, iconP, tempP, humidityP);
-                        forecastDiv.append(dayDiv, emptyDiv);
+                        forecastDiv.append(dayDiv);
 
 
 

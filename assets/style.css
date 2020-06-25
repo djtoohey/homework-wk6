@@ -1,0 +1,26 @@
+.badge-green{
+    color: white;
+    background-color: green;
+}
+.badge-yellow{
+    color: black;
+    background-color: yellow;
+}
+.badge-orange{
+    color: white;
+    background-color: orange;
+}
+.badge-red{
+    color: white;
+    background-color: red;
+}
+.badge-purple{
+    color: white;
+    background-color: purple;
+}
+
+.forecast{
+    width: 162px;
+    float: left;
+    margin-right: 50px;
+}
