@@ -32,6 +32,17 @@ img{
     text-align: center;
 }
 
+#todayforecast img {
+    
+    
+    height: 1.5em;
+    width: auto;
+    
+}
+  
+#todayforecast h2 {
+    position: relative;
+}
 
 
 /* for search btn */

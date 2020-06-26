@@ -64,11 +64,19 @@ $(document).ready(function () {
 
             }).then(function (uv) {
                 todayDiv.show();
-                // set temp, humidity,wind,name
+                // set temp, humidity, wind (converting to km/h using m/s* 3.6 = km/h), name
                 var temp = weather.main.temp;
                 var humidity = weather.main.humidity;
-                var wind = weather.wind.speed;
+                var wind = (weather.wind.speed * 3.6).toFixed(2);
                 var name = weather.name;
+                var weatherIcon = weather.weather[0].icon;
+
+
+                var unixTime = 1593183227;
+                var milliTime = unixTime * 1000;
+                var dateObj = new Date(milliTime);
+                var dateFormat = (dateObj.toLocaleString()).substr(0, 10);
+                // console.log("HEY LISTEN " + dateFormat);
 
                 var uvIndex = uv.value;
 
@@ -97,10 +105,17 @@ $(document).ready(function () {
                 console.log("uv", uvIndex);
 
                 // push all results to todayDiv
-                var nameH1 = $("<h2>").text(name);
-                var tempP = $("<p>").text("Temp " + temp);
-                var humidityP = $("<p>").text("Humidity " + humidity);
-                var windP = $("<p>").text("Wind " + wind);
+                var weatherDiv = $("<div id=todayforecast>")
+                var nameH2 = $("<h2>").text(`${name} (${dateFormat})`);
+
+                var imgSpan = $("<img>").attr("src", `https://openweathermap.org/img/wn/${weatherIcon}.png`);
+                imgSpan.attr("alt", weather.weather[0].description);
+                nameH2.append(imgSpan);
+                weatherDiv.append(nameH2);
+
+                var tempP = $("<p>").text(`Temp: ${temp} °C`);
+                var humidityP = $("<p>").text(`Humidity: ${humidity}%`);
+                var windP = $("<p>").text(`Wind Speed: ${wind} KM/H`);
                 var uvP = $("<p>").text("UV Index: ");
 
                 // sets color for badge
@@ -128,7 +143,7 @@ $(document).ready(function () {
                 uvP.append(uvBadge);
 
                 // currently pushes to under the search bar
-                todayDiv.append(nameH1, tempP, humidityP, windP, uvP);
+                todayDiv.append(weatherDiv, tempP, humidityP, windP, uvP);
 
                 var forecastQueryUrl = "https://api.openweathermap.org/data/2.5/onecall?lon=" + lon + "&lat=" + lat + "&units=metric&appid=" + appID;
                 console.log(forecastQueryUrl);
@@ -138,6 +153,9 @@ $(document).ready(function () {
 
                 }).then(function (forecast) {
                     forecastHeading.show();
+
+                    var forecastDiv = $("#forecast");
+                    forecastDiv.empty();
 
                     // loop through each day except for today for the next 5 days
                     for (let i = 1; i < 5 + 1; i++) {
@@ -160,7 +178,7 @@ $(document).ready(function () {
                         console.log(forecastDate, temp, humidity, weatherIcon);
 
                         // empty div with id forecast
-                        var forecastDiv = $("#forecast");
+
 
                         // push data to screen
                         var dayDiv = $("<div class='forecast card text-white bg-primary'>");
