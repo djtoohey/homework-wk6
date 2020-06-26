@@ -43,6 +43,6 @@ Other:
 * added comments 
 * made [README.md](/README.md)
 
-![alt text](assets\finished.png "finished page")
+![finished page image](/assets/finished.png "finished page")
 
 ## GitHub Pages: https://djtoohey.github.io/homework-wk6/index.html
