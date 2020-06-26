@@ -18,12 +18,15 @@
     color: white;
     background-color: purple;
 }
-
+body{
+    padding-bottom: 10px;
+}
 .forecast{
-    width: 162px;
+    width: 165px;
     float: left;
-    margin-top: 10px;
+    /* margin-top: 10px; */
     margin-right: 50px;
+    padding: 15px;
 }
 
 img{
@@ -44,6 +47,10 @@ img{
     position: relative;
 }
 
+#today{
+    padding: 25px;
+}
+
 
 /* for search btn */
 form.searchform input[type=text] {
@@ -53,9 +60,9 @@ form.searchform input[type=text] {
     float: left;
     width: 80%;
     background: #f1f1f1;
-  }
+}
   
-  form.searchform button {
+form.searchform button {
     float: left;
     width: 20%;
     padding: 10px;
@@ -65,14 +72,14 @@ form.searchform input[type=text] {
     border: 1px solid grey;
     border-left: none;
     cursor: pointer;
-  }
+}
   
-  form.searchform button:hover {
+form.searchform button:hover {
     background: #0b7dda;
-  }
+}
   
-  form.searchform::after {
+form.searchform::after {
     content: "";
     clear: both;
     display: table;
-  }
+}

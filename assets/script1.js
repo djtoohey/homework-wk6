@@ -1,9 +1,23 @@
+// generic
+// https://api.openweathermap.org/data/2.5/weather?q=Bujumbura,Burundi&appid=a72f11d02f33ee95d3125aac2554131c"
+
+// put ajax within ajax
+
+// uv index
+// https://api.openweathermap.org/data/2.5/uvi?lat=37.75&lon=-122.37&appid=a72f11d02f33ee95d3125aac2554131c
+
+// for history of search
+// https://getbootstrap.com/docs/4.5/components/card/#list-groups
+
+
+var citySearchArray = [];
+
+var lastSearch = localStorage.getItem("search");
+citySearchArray.push(lastSearch);
+
+
 // waits for page to load
 $(document).ready(function () {
-    var citySearchArray = [];
-
-    var lastSearch = localStorage.getItem("search");
-    citySearchArray.push(lastSearch);
     searchList(citySearchArray, lastSearch);
     // finds citybtn
     var cityBtn = $("#search-city-btn")
@@ -58,7 +72,6 @@ $(document).ready(function () {
             var lat = weather.coord.lat;
 
             var uvQueryUrl = "https://api.openweathermap.org/data/2.5/uvi?lon=" + lon + "&lat=" + lat + "&appid=" + appID;
-            console.log(queryUrl)
             $.ajax({
                 url: uvQueryUrl,
                 method: "GET"
@@ -66,27 +79,33 @@ $(document).ready(function () {
             }).then(function (uv) {
                 todayDiv.show();
                 // set temp, humidity, wind (converting to km/h using m/s* 3.6 = km/h), name
+
+
                 var temp = weather.main.temp;
                 var humidity = weather.main.humidity;
                 var wind = (weather.wind.speed * 3.6).toFixed(2);
                 var name = weather.name;
                 var weatherIcon = weather.weather[0].icon;
 
-                var date = unixTimeConverter(weather.dt);
 
+                var unixTime = 1593183227;
+                var milliTime = unixTime * 1000;
+                var dateObj = new Date(milliTime);
+                var dateFormat = (dateObj.toLocaleString()).substr(0, 10);
+                // console.log("HEY LISTEN " + dateFormat);
 
                 var uvIndex = uv.value;
 
                 // push all results to todayDiv
                 var weatherDiv = $("<div id=todayforecast>")
-                var nameH2 = $("<h2>").text(`${name} (${date})`);
+                var nameH2 = $("<h2>").text(`${name} (${dateFormat})`);
 
                 var imgSpan = $("<img>").attr("src", `https://openweathermap.org/img/wn/${weatherIcon}.png`);
                 imgSpan.attr("alt", weather.weather[0].description);
                 nameH2.append(imgSpan);
                 weatherDiv.append(nameH2);
 
-                var tempP = $("<p>").text(`Temperature: ${temp} °C`);
+                var tempP = $("<p>").text(`Temp: ${temp} °C`);
                 var humidityP = $("<p>").text(`Humidity: ${humidity}%`);
                 var windP = $("<p>").text(`Wind Speed: ${wind} KM/H`);
                 var uvP = $("<p>").text("UV Index: ");
@@ -125,17 +144,22 @@ $(document).ready(function () {
                     method: "GET"
 
                 }).then(function (forecast) {
-
-                    // $("#5day-heading").text("5-Day Forecast:");
-                    forecastHeading.show()
+                    var forecastHeading = $("#5day-heading");
+                    forecastHeading.show();
 
                     var forecastDiv = $("#forecast");
                     forecastDiv.empty();
 
                     // loop through each day except for today for the next 5 days
                     for (let i = 1; i < 5 + 1; i++) {
+                        // convert unix time to human time
+                        var unixTime = forecast.daily[i].dt;
+                        var milliTime = unixTime * 1000;
+                        var dateObj = new Date(milliTime);
+                        var dateFormat = dateObj.toLocaleString();
+
                         // get date
-                        var forecastDate = unixTimeConverter(forecast.daily[i].dt)
+                        var forecastDate = dateFormat.substr(0, 10);
                         // get weather icon for date
                         var weatherIcon = forecast.daily[i].weather[0].icon;
                         // get temp for date
@@ -143,79 +167,65 @@ $(document).ready(function () {
                         // get humidity for date
                         var humidity = forecast.daily[i].humidity;
 
+                        // debug
+                        // console.log(forecastDate, temp, humidity, weatherIcon);
+
+                        // empty div with id forecast
+
+
                         // push data to screen
                         var dayDiv = $("<div class='forecast card text-white bg-primary'>");
-                        var dateP = $("<h4>").text(forecastDate);
+                        var dateP = $("<p>").text(forecastDate);
                         var iconP = $("<img>").attr("src", `http://openweathermap.org/img/wn/${weatherIcon}@2x.png`);
-                        var tempP = $("<p>").text(`Temp: ${temp}°C`);
-                        var humidityP = $("<p>").text(`Humidity: ${humidity}%`);
+                        var tempP = $("<p>").text("Temp " + temp);
+                        var humidityP = $("<p>").text("Humidity " + humidity);
 
 
 
                         dayDiv.append(dateP, iconP, tempP, humidityP);
                         forecastDiv.append(dayDiv);
 
+
+
+
                     }
+
                 });
+
+
+
             });
         });
+
     };
-
-    // convert unix time to human time, return the date
-    function unixTimeConverter(unixTime) {
-
-        // convert seconds to milliseconds
-        var milliTime = unixTime * 1000;
-        // create the exact date & time
-        var dateObj = new Date(milliTime);
-        // get the date
-        var date = (dateObj.toLocaleString()).substr(0, 10);
-        // return the date
-        return date;
-    }
-
-    // set search list
     function searchList(citySearchArray, name) {
-        // check if name is already in citySearchArray
         if (citySearchArray.includes(name)) {
-            // if is, find its index pos
+
             var deletePos = citySearchArray.indexOf(name);
-            // and delete it
             citySearchArray.splice(deletePos, 1);
         }
 
-        // add name to array in first pos
         citySearchArray.unshift(name);
-        // set it to search in localStorage
         localStorage.setItem("search", name);
-        // get history div
         var cityHistoryDiv = $("#history");
-        // empty it
         cityHistoryDiv.empty();
-        // create new list
+        cityHistoryDiv.addClass("card");
         var cityList = $("<ul>");
-        // add classes list-group and list-group-flush from bootstrap
         cityList.addClass("list-group list-group-flush");
         for (let i = 0; i < citySearchArray.length; i++) {
-            // create a new btn
             var newCity = $("<button>");
-            // add classes list-group-item btn-group-vertical from bootstrap
             newCity.addClass("list-group-item btn-group-vertical");
 
-            // set the text to the array index text
             newCity.text(citySearchArray[i]);
 
-            // add click event 
             newCity.on("click", function () {
-                // sets the value of the search box to the array index text
                 $("#search-city").val(citySearchArray[i]);
-                // searchCity function runs
                 searchCity();
             });
 
-            // add button to list
+
+
             cityList.append(newCity);
-            // add list to div
             cityHistoryDiv.append(cityList);
 
 

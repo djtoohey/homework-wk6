@@ -29,23 +29,24 @@
         <div class="row">
             <section id="search" class="col-2">
                 <div id="searchbar">
-                    <p>Search for a city</p>
+                    <h4>Search for a city:</h4>
                     <form class="searchform" style="margin:auto;max-width:300px">
-                        <input type="text" id="search-city" name="search-city" value="adelaide">
-                        <button type="submit" id="search-city-btn"><i class="fa fa-search"></i></button>
+                        <input type="text" id="search-city" name="search-city" value="adelaide" class="rounded-left">
+                        <button type="submit" id="search-city-btn" class="rounded-right"><i
+                                class="fa fa-search"></i></button>
                     </form>
                 </div>
                 <br>
-                <div id="history"></div>
+                <div id="history" class="card"></div>
             </section>
 
             <section id="data" class="col-10">
 
                 <div id="today" class="card"></div>
-                <div id="forecast">
-                    <br>
-                    <h3 id="5day-heading">5-Day Forecast:</h3>
-                </div>
+                <br>
+                <h3 id="5day-heading">5-Day Forecast:</h3>
+                <div id="forecast"></div>
+
 
 
             </section>
