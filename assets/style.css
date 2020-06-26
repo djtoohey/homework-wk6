@@ -20,6 +20,15 @@
     background-color: purple;
 }
 
+/* page heading */
+#page-heading{
+    background-color: #323232; 
+    color: white; 
+    width: 100%; 
+    padding:10px; 
+    text-align: center;
+}
+
 /* added padding to bottom of page */
 body{
     padding-bottom: 10px;
