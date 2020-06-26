@@ -24,6 +24,8 @@ $(document).ready(function () {
     var todayDiv = $("#today");
     todayDiv.hide();
 
+    var citySearchArray = [];
+
 
     // when citybtn is clicked
     cityBtn.on("click", function () {
@@ -81,21 +83,32 @@ $(document).ready(function () {
                 var uvIndex = uv.value;
 
                 // search history
+                if (citySearchArray.includes(name)) {
+                    console.log("Here!: " + citySearchArray.indexOf(name));
+                    var deletePos = citySearchArray.indexOf(name);
+                    citySearchArray.splice(deletePos, 1);
+                }
 
+                // NEED TO ADD CHANGE SCREEN
+
+                citySearchArray.unshift(name);
                 var cityHistoryDiv = $("#history");
+                cityHistoryDiv.empty();
                 cityHistoryDiv.addClass("card");
-
                 var cityList = $("<ul>");
                 cityList.addClass("list-group list-group-flush");
+                for (let i = 0; i < citySearchArray.length; i++) {
+                    var newCity = $("<button>");
+                    newCity.addClass("list-group-item btn-group-vertical");
 
-                var newCity = $("<button>");
-                newCity.addClass("list-group-item btn-group-vertical");
+                    newCity.text(citySearchArray[i]);
 
-                newCity.text(name);
+                    console.log(citySearchArray);
 
-                cityList.prepend(newCity);
-                cityHistoryDiv.prepend(cityList);
+                    cityList.append(newCity);
+                    cityHistoryDiv.append(cityList);
 
+                }
 
                 // log all results
                 console.log("name", name);
