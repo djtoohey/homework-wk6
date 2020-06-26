@@ -1,3 +1,4 @@
+/* all badge colors corresponding to UV index */
 .badge-green{
     color: white;
     background-color: green;
@@ -18,35 +19,39 @@
     color: white;
     background-color: purple;
 }
+
+/* added padding to bottom of page */
 body{
     padding-bottom: 10px;
 }
+
+/* getting 5 day forecast boxes to look right */
 .forecast{
     width: 165px;
     float: left;
-    /* margin-top: 10px; */
     margin-right: 50px;
     padding: 15px;
 }
 
+/* basic img styling */
 img{
     height: 100px;
     width: 100px;
     text-align: center;
 }
 
+/* specific img styling to forecast */
 #todayforecast img {
-    
-    
     height: 1.5em;
     width: auto;
-    
 }
   
+/* styling for h2 in forecast boxes */
 #todayforecast h2 {
     position: relative;
 }
 
+/* sets padding in the main box */
 #today{
     padding: 25px;
 }

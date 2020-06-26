@@ -1,15 +1,28 @@
 // waits for page to load
 $(document).ready(function () {
+    // declare array for cities
     var citySearchArray = [];
 
+    // gets the last search from localstorage
     var lastSearch = localStorage.getItem("search");
-    citySearchArray.push(lastSearch);
-    searchList(citySearchArray, lastSearch);
+
+    if (lastSearch === null) {
+        $("#history").hide();
+        console.log(lastSearch)
+    }
+    else {
+        // adds to array
+        citySearchArray.push(lastSearch);
+        searchList(citySearchArray, lastSearch);
+    }
+
+
     // finds citybtn
     var cityBtn = $("#search-city-btn")
 
-    var forecastHeading = $("#5day-heading");
 
+
+    var forecastHeading = $("#5day-heading");
     forecastHeading.hide();
 
     var todayDiv = $("#today");
@@ -190,6 +203,8 @@ $(document).ready(function () {
         localStorage.setItem("search", name);
         // get history div
         var cityHistoryDiv = $("#history");
+        // show cityHistoryDiv
+        cityHistoryDiv.show();
         // empty it
         cityHistoryDiv.empty();
         // create new list
