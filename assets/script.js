@@ -17,15 +17,29 @@ $(document).ready(function () {
     // openweather app id
     var appID = "a72f11d02f33ee95d3125aac2554131c";
 
+    var forecastHeading = $("#5day-heading");
+
+    forecastHeading.hide();
+
+    var todayDiv = $("#today");
+    todayDiv.hide();
+
 
     // when citybtn is clicked
     cityBtn.on("click", function () {
+        event.preventDefault();
+
         // empty div with id today
-        var todayDiv = $("#today");
+
         todayDiv.empty();
 
         // get the value from the search input
         var city = $("#search-city").val();
+
+
+
+        // cityHistoryDiv
+
         // search city, with units set to metric
         var queryUrl = "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&units=metric&appid=" + appID;
         console.log(queryUrl);
@@ -49,7 +63,7 @@ $(document).ready(function () {
                 method: "GET"
 
             }).then(function (uv) {
-
+                todayDiv.show();
                 // set temp, humidity,wind,name
                 var temp = weather.main.temp;
                 var humidity = weather.main.humidity;
@@ -57,6 +71,23 @@ $(document).ready(function () {
                 var name = weather.name;
 
                 var uvIndex = uv.value;
+
+                // search history
+
+                var cityHistoryDiv = $("#history");
+                cityHistoryDiv.addClass("card");
+
+                var cityList = $("<ul>");
+                cityList.addClass("list-group list-group-flush");
+
+                var newCity = $("<button>");
+                newCity.addClass("list-group-item btn-group-vertical");
+
+                newCity.text(name);
+
+                cityList.prepend(newCity);
+                cityHistoryDiv.prepend(cityList);
+
 
                 // log all results
                 console.log("name", name);
@@ -106,6 +137,7 @@ $(document).ready(function () {
                     method: "GET"
 
                 }).then(function (forecast) {
+                    forecastHeading.show();
 
                     // loop through each day except for today for the next 5 days
                     for (let i = 1; i < 5 + 1; i++) {

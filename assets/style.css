@@ -22,5 +22,46 @@
 .forecast{
     width: 162px;
     float: left;
+    margin-top: 10px;
     margin-right: 50px;
 }
+
+img{
+    height: 100px;
+    width: 100px;
+    text-align: center;
+}
+
+
+
+/* for search btn */
+form.searchform input[type=text] {
+    padding: 10px;
+    font-size: 17px;
+    border: 1px solid grey;
+    float: left;
+    width: 80%;
+    background: #f1f1f1;
+  }
+  
+  form.searchform button {
+    float: left;
+    width: 20%;
+    padding: 10px;
+    background: #2196F3;
+    color: white;
+    font-size: 17px;
+    border: 1px solid grey;
+    border-left: none;
+    cursor: pointer;
+  }
+  
+  form.searchform button:hover {
+    background: #0b7dda;
+  }
+  
+  form.searchform::after {
+    content: "";
+    clear: both;
+    display: table;
+  }
